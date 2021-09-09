@@ -1,5 +1,6 @@
 from tabtrackerapi.models import user
 from django.db import models
+from django.contrib.auth.models import User
 
 class Lesson(models.Model):
     """Lesson Model
@@ -10,7 +11,7 @@ class Lesson(models.Model):
         description (Charfield): A description of the lesson
     """
 
-    user_id = models.ForeignKey("User", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson_name = models.CharField(max_length=100)
     link = models.CharField(max_length=100)
     description = models.CharField(max_length=200)

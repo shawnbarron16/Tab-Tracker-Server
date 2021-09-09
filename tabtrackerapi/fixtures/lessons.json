@@ -1,0 +1,22 @@
+[
+    {
+        "model": "tabtrackerapi.lesson",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "lesson_name": "Beginner Practice",
+            "link": "https://youtu.be/HNSaXAe8tyg",
+            "description": "A beginners lesson by Marty"
+        }
+    },
+    {
+        "model": "tabtrackerapi.lesson",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "lesson_name": "Electric Lesson",
+            "link": "https://youtu.be/HNSaXAe8tyg",
+            "description": "An intro to electric guitar"
+        }
+    }
+]

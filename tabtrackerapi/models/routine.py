@@ -1,4 +1,5 @@
 from django.db import models, router
+from django.contrib.auth.models import User
 
 class Routine(models.Model):
     """Routine Model
@@ -8,7 +9,7 @@ class Routine(models.Model):
         description (CharField): A description of the routine
     """
 
-    user_id = models.ForeignKey("User", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     routine_name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
 

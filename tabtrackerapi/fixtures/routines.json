@@ -1,0 +1,29 @@
+[
+    {
+        "model": "tabtrackerapi.routine",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "routine_name": "Basic Practice",
+            "description": "Practice a basic G chord and different tuning"
+        }
+    },
+    {
+        "model": "tabtrackerapi.routine",
+        "pk": 2,
+        "fields": {
+            "user": 1,
+            "routine_name": "Practice Crazy Train",
+            "description": "It'sa a crazy train baby!"
+        }
+    },
+    {
+        "model": "tabtrackerapi.routine",
+        "pk": 3,
+        "fields": {
+            "user": 1,
+            "routine_name": "Barr Chords",
+            "description": "The hardest part of playing guitar"
+        }
+    }
+]
