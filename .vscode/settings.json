@@ -4,5 +4,13 @@
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
         "--django-settings-module=<tabtracker>.settings",
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Tab Tracker",
+            "database": "db.sqlite3"
+        }
     ]
 }
