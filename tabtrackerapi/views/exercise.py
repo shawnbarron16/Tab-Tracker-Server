@@ -1,9 +1,11 @@
 """View module for handling requests for exercises"""
 from django.http import HttpResponseServerError
+from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
-from tabtrackerapi.models import Exercise
+from rest_framework import status
+from tabtrackerapi.models import Exercise, Routine
 
 class ExerciseView(ViewSet):
     """Tab Tracker Exercises"""
@@ -43,6 +45,31 @@ class ExerciseView(ViewSet):
         
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def create(self, request):
+        """Handles POST requests for exercises
+        Returns:
+            Response -- JSON serialized exercise data
+
+            For a create for an exercise a routine must be passed in a a
+            query parameter, we get the routine id from the url and the use
+            Routine.objects.get to get the routine with the matching id from
+            the url and pass it in as the routine the exercise is assigned to. 
+        """
+        selected_routine = request.query_params.get('routine', None)      
+
+        try:
+            exercise = Exercise.objects.create(
+                routine = Routine.objects.get(pk=selected_routine),
+                description = request.data['description'],
+            )
+            serializer = ExerciseSerializer(
+                exercise, many=False, context={'request': request}
+            )
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercises

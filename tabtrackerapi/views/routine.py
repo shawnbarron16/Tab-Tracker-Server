@@ -1,9 +1,12 @@
 """View module for handling requests for routines"""
 from django.http import HttpResponseServerError
+from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from tabtrackerapi.models import Routine
+from rest_framework import status
+
 
 class RoutineView(ViewSet):
     """Tab Tracker Routines"""
@@ -39,6 +42,26 @@ class RoutineView(ViewSet):
         
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def create(self, request):
+        """Handles POST requests for routines
+        Returns:
+            Response -- JSON serialized routine data
+        """
+
+        try:
+            routine = Routine.objects.create(
+                user = request.auth.user,
+                routine_name = request.data['routine_name'],
+                description = request.data['description'],
+            )
+            serializer = RoutineSerializer(
+                routine, many=False, context={'request': request}
+            )
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
 class RoutineSerializer(serializers.ModelSerializer):
     """JSON serializer for routines
