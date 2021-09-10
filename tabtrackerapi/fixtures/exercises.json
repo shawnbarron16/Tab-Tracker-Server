@@ -3,7 +3,7 @@
         "model": "tabtrackerapi.exercise",
         "pk": 1,
         "fields": {
-            "routine_id": 1,
+            "routine": 1,
             "description": "Transition to G minor from other chords 10 times."
         }
     },
@@ -11,7 +11,7 @@
         "model": "tabtrackerapi.exercise",
         "pk": 2,
         "fields": {
-            "routine_id": 2,
+            "routine": 2,
             "description": "Play Crazy Train all the way through."
         }
     },
@@ -19,7 +19,7 @@
         "model": "tabtrackerapi.exercise",
         "pk": 3,
         "fields": {
-            "routine_id": 3,
+            "routine": 3,
             "description": "Play a song with only barr chords."
         }
     },
@@ -27,7 +27,7 @@
         "model": "tabtrackerapi.exercise",
         "pk": 4,
         "fields": {
-            "routine_id": 1,
+            "routine": 1,
             "description": "Use a different tuning"
         }
     }

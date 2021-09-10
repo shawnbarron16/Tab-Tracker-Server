@@ -7,7 +7,7 @@ class Exercise(models.Model):
         description (CharField): A description of what the exercise is  
     """
 
-    routine_id = models.ForeignKey("Routine", on_delete=models.CASCADE)
+    routine = models.ForeignKey("Routine", on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
 
     def __str__(self):
