@@ -9,9 +9,9 @@ python3 manage.py makemigrations tabtrackerpapi
 python3 manage.py migrate
 
 Once your models have been migrated, establish a connection with a databse, then you can seed your data using these commands in your terminal:
-python3 manage.py loaddata lessons
-python3 manage.py loaddata routines
-python3 manage.py loaddata exercises
+- python3 manage.py loaddata lessons
+- python3 manage.py loaddata routines
+- python3 manage.py loaddata exercises
 
 After this your all set to run the sever for Tab Tracker, to do so use this command in your terminal:
 python3 manage.py runserver
