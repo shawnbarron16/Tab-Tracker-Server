@@ -83,6 +83,21 @@ class LessonView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a lesson
+        ReturnsL:
+            Response -- 204 status
+        """
+
+        try:
+            lesson = Lesson.objects.get(pk=pk)
+            lesson.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Lesson.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
 
 class LessonSerializer(serializers.ModelSerializer):
     """JSON serializer for lessons

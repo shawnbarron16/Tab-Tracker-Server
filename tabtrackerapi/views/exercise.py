@@ -93,6 +93,21 @@ class ExerciseView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for an
+        ReturnsL:
+            Response -- 204 status
+        """
+
+        try:
+            exercise = Exercise.objects.get(pk=pk)
+            exercise.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Exercise.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
 class ExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for exercises
 
