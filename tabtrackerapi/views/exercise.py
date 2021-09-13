@@ -5,7 +5,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from tabtrackerapi.models import Exercise, Routine
+from tabtrackerapi.models import Exercise, Routine, exercise
 
 class ExerciseView(ViewSet):
     """Tab Tracker Exercises"""
@@ -67,6 +67,28 @@ class ExerciseView(ViewSet):
                 exercise, many=False, context={'request': request}
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def update(self, request, pk=None):
+        """Handles PUT requests for exercise
+        Returns:
+            Response -- Empty body with 204 status
+        We get the routine the same way we do in the create function,
+        except now the routine comes after we pass the exercise id
+        as a url parameter as well, this being the pk argument
+        """
+        selected_routine = request.query_params.get('routine', None) 
+
+        try: 
+            exercise = Exercise.objects.get(pk=pk)
+
+            exercise.routine = Routine.objects.get(pk=selected_routine)
+            exercise.description = request.data['description']
+            exercise.save()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
         
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)

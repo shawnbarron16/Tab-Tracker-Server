@@ -45,7 +45,7 @@ class LessonView(ViewSet):
     def create(self, request):
         """Handles POST requests for lesson
         Returns:
-            Response -- JSON serialized lesson data
+            Response -- Empty body with 201 status
         """
 
         try:
@@ -62,6 +62,27 @@ class LessonView(ViewSet):
         
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def update(self, request, pk=None):
+        """Handles PUT requests for lesson
+        Returns:
+            Response -- Empty body with 204 status
+        """
+
+        try: 
+            lesson = Lesson.objects.get(pk=pk)
+
+            lesson.user = request.auth.user
+            lesson.lesson_name = request.data['lesson_name']
+            lesson.link = request.data['link']
+            lesson.description = request.data['description']
+            lesson.save()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LessonSerializer(serializers.ModelSerializer):
     """JSON serializer for lessons
