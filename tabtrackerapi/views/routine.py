@@ -1,4 +1,5 @@
 """View module for handling requests for routines"""
+from io import RawIOBase
 from django.http import HttpResponseServerError
 from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ViewSet
@@ -81,6 +82,21 @@ class RoutineView(ViewSet):
         
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a routine
+        ReturnsL:
+            Response -- 204 status
+        """
+
+        try:
+            routine = Routine.objects.get(pk=pk)
+            routine.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Routine.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
 class RoutineSerializer(serializers.ModelSerializer):
     """JSON serializer for routines
