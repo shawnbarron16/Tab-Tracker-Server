@@ -63,6 +63,25 @@ class RoutineView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, pk=None):
+        """Handles PUT requests for routine
+        Returns:
+            Response -- Empty body with 204 status
+        """
+
+        try: 
+            routine = Routine.objects.get(pk=pk)
+
+            routine.user = request.auth.user
+            routine.routine_name = request.data['routine_name']
+            routine.description = request.data['description']
+            routine.save()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
 class RoutineSerializer(serializers.ModelSerializer):
     """JSON serializer for routines
 
