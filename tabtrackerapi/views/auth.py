@@ -1,3 +1,4 @@
+from hashlib import new
 from tabtrackerapi.models import user
 from django.conf import UserSettingsHolder
 from django.contrib import auth
@@ -19,7 +20,7 @@ def login_user(request):
     email = request.data['email']
     password = request.data['password']
 
-    authenticated_user = authenticate(email=email, password=password)
+    authenticated_user = authenticate(username=email, password=password)
 
     if authenticated_user is not None:
         token = Token.objects.get(user=authenticated_user)
@@ -35,21 +36,23 @@ def login_user(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
-    """Handles the creation of a new gamer for authentication
-
+    '''Handles the creation of a new gamer for authentication
     Method arguments:
-        request -- The full HTTP object
-    """
+      request -- The full HTTP request object
+    '''
     
+    # Create a new user by invoking the `create_user` helper method
+    # on Django's built-in User model
     new_user = User.objects.create_user(
+        username=request.data['username'],
         email=request.data['email'],
         password=request.data['password'],
         first_name=request.data['first_name'],
         last_name=request.data['last_name']
     )
-    
-    User.objects.create(new_user)
 
-    token = Token.objects.create(user=User)
+    # Use the REST Framework's token generator on the new user account
+    token = Token.objects.create(user=new_user)
+    # Return the token to the client
     data = { 'token': token.key }
     return Response(data)
